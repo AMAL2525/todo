@@ -1,25 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { selectUser } from './actions/todo.actions';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  constructor(props){
+    super(props);
+    this.users = [
+      {id: 1, name: 'john'},
+      {id: 2, name: 'paul'},
+      {id: 3, name: 'richard'}
+    ];
+    this.clickUser = this.clickUser.bind(this); 
+  }
+  
+  clickUser(e){
+    alert(e.target.value);
+  }
+  
+  render(){
+    return (
+      <div>
+        {this.users.map((user) => {
+           return (
+             <li
+               key={user.id}
+               value={user.name}
+               onClick={this.clickUser}>{user.name}</li>
+           );
+         })}
+       </div>
+    );
+  }
 }
 
-export default App;
+function mapStateToProps(state){
+  return {
+    users: state.users
+  }
+}
+
+export default connect(mapStateToProps)(App);
